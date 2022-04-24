@@ -1,6 +1,6 @@
 import { Table } from "antd";
-import { useEffect, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useMemo,useCallback } from "react";
+import { useDispatch, useSelector, } from "react-redux";
 import { useResizeDetector } from 'react-resize-detector';
 
 import {setSelectedRowKeys} from '../../../redux/dataSlice';
@@ -21,20 +21,24 @@ export default function ListTable({sendMessageToParent}){
     const {fields,views,modelID}=useSelector(state=>state.definition);
     const {selectedRowKeys,list,fixedColumn,filter,pagination,sorter}=useSelector(state=>state.data.views[state.data.currentView].data);
 
+    const viewConf=useMemo(()=>{
+        return views.find(item=>item.viewID===currentView);
+    },[currentView,views]);
+
     //根据视图列配置生成列
-    const getColumn=(field,index,isFixed)=>{
+    const getColumn=useCallback((field,index,isFixed)=>{
         return {
             dataIndex:field.field,
             title:field.name,
-            filterDropdown:<FilterDropdown field={field} index={index}/>,
+            filterDropdown:<FilterDropdown sendMessageToParent={sendMessageToParent} field={field} index={index}/>,
             filterIcon: <FilterIcon field={field}/>,
             width:field.width,
             fixed:(isFixed?'left':''),
             ellipsis: true,
         }
-    }
+    },[sendMessageToParent]);
 
-    const getOperationColumn=(rowToolbar)=>{
+    const getOperationColumn=useCallback((rowToolbar)=>{
         const {showCount,buttons,width}=rowToolbar;
         return { 
             title: '操作', 
@@ -47,11 +51,7 @@ export default function ListTable({sendMessageToParent}){
                                                 buttons={buttons} 
                                                 record={record}/>
         }
-    }
-
-    const viewConf=useMemo(()=>{
-        return views.find(item=>item.viewID===currentView);
-    },[currentView,views]);
+    },[sendMessageToParent]);
     
     const columns=useMemo(()=>{
         let columns=[];
@@ -71,8 +71,7 @@ export default function ListTable({sendMessageToParent}){
             }
         }
         return columns
-    },[fields,viewConf,fixedColumn]);
-
+    },[fields,viewConf,fixedColumn,getColumn,getOperationColumn]);
 
     const searchFields=useMemo(()=>{
         let searchFields=[];
@@ -90,7 +89,7 @@ export default function ListTable({sendMessageToParent}){
 
     useEffect(()=>{
         if(item&&origin&&searchFields.length>0){
-            const frameParams={frameType:item.frameType,frameID:item.key,origin:origin};
+            const frameParams={frameType:item.frameType,frameID:item.params.key,origin:origin};
             const queryParams={modelID,viewID:currentView,filter,pagination,sorter,fields:searchFields};
             sendMessageToParent(createQueryDataMessage(frameParams,queryParams));
         }
