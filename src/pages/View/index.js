@@ -54,8 +54,8 @@ export default function View(){
                     <Col span={24}><ListTable sendMessageToParent={sendMessageToParent} /></Col>                   
                 </Row>
             </div>
-        )
+        );
     } else {
-        return(<PageLoading/>)
+        return(<PageLoading/>);
     }
 }

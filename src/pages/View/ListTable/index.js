@@ -10,6 +10,7 @@ import TableFooter from './TableFooter';
 
 import {createQueryDataMessage} from '../../../utils/normalOperations';
 import RowOperationBar from '../RowOperationBar';
+import ColumnControl from "./ColumnControl";
 
 import './index.css';
 
@@ -35,6 +36,9 @@ export default function ListTable({sendMessageToParent}){
             width:field.width,
             fixed:(isFixed?'left':''),
             ellipsis: true,
+            render:(text, record, index)=>{
+                return <ColumnControl text={text} field={field} record={record} index={index} />;
+            }
         }
     },[sendMessageToParent]);
 
@@ -80,7 +84,22 @@ export default function ListTable({sendMessageToParent}){
             viewConf.fields.forEach((fieldItem,index) => {
                 const fieldConf=fields.find(item=>item.field===fieldItem.field);
                 if(fieldConf){
-                    searchFields.push({field:fieldItem.field,dataType:fieldConf.dataType});
+                    let searchField={
+                        field:fieldItem.field,
+                        dataType:fieldConf.dataType
+                    };
+                    if(fieldItem.fields&&fieldItem.fields.length>0){
+                        searchField={
+                            field:fieldItem.field,
+                            dataType:fieldConf.dataType,
+                            fieldType:fieldConf.fieldType,
+                            relatedModelID:fieldConf.relatedModelID,
+                            relatedField:fieldConf.relatedField,
+                            associationModelID:fieldConf.associationModelID,
+                            fields:fieldItem.fields
+                        }
+                    }
+                    searchFields.push(searchField);
                 }
             });
         }
