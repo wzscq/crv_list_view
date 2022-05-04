@@ -34,7 +34,7 @@ export default function RowOperationBar({sendMessageToParent,record,showCount,bu
     return (
         <Space className="row-operation-bar" size={5}>
         {
-            buttons.map(item=>
+            buttons.filter(item=>operations.find(element=>element.id===item.operationID)).map(item=>
                 <OperationButton type='link' doOperation={doOperation} operation={item}/>
             )
         }

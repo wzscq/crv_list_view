@@ -61,15 +61,18 @@ export default function ListOperationBar({sendMessageToParent}){
                 if(buttons){
                     for(let i=0;i<buttons.length&&i<showCount;++i){
                         const item=buttons[i];
-                        buttonControls.push(
-                            <OperationButton type='primary' doOperation={doOperation} operation={item}/>
-                        )
+                        const operation=operations.find(element=>element.id===item.operationID);
+                        if(operation){
+                            buttonControls.push(
+                                <OperationButton type='primary' doOperation={doOperation} operation={item}/>
+                            )
+                        }
                     }
                 }
             }
         }
         return buttonControls;
-    },[currentView,views,doOperation]);
+    },[currentView,operations,views,doOperation]);
 
     return (
         <div className="list-operation-bar">
