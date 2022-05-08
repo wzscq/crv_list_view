@@ -10,6 +10,13 @@ export default function ColumnControl({text,field, record, index}){
             value=text.value?text.value:text;
         }
     }
+
+    if(field.options){
+        const option=field.options.find(item=>item.value==value);
+        if(option){
+            value=option.label;
+        }
+    }
     
     return (
         <span>{value}</span>
