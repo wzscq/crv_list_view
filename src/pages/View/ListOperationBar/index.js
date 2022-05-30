@@ -30,20 +30,22 @@ export default function ListOperationBar({sendMessageToParent}){
     const doOperation=useCallback((opItem)=>{
         const operation=operations.find(element=>element.id===opItem.operationID);
         if(operation){
+            const input={
+                modelID:modelID,
+                viewID:currentView,
+                selectedRowKeys:selectedRowKeys,
+                filter:filter,
+                pagination:pagination,
+                sorter:sorter,
+                fields:searchFields
+            };
+
             const message={
                 type:FRAME_MESSAGE_TYPE.DO_OPERATION,
                 data:{
                     operationItem:{
                         ...operation,
-                        input:{
-                            modelID:modelID,
-                            viewID:currentView,
-                            selectedRowKeys:selectedRowKeys,
-                            filter:filter,
-                            pagination:pagination,
-                            sorter:sorter,
-                            fields:searchFields
-                        }
+                        input:{...input,...operation.input}
                     }
                 }
             };
