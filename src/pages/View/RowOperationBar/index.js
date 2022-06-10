@@ -1,5 +1,5 @@
 import { Space } from "antd"
-import { useCallback } from "react"
+import { useCallback,useMemo } from "react"
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
@@ -30,14 +30,26 @@ export default function RowOperationBar({sendMessageToParent,record,showCount,bu
             sendMessageToParent(message);
         }
     },[modelID,operations,sendMessageToParent,record]);
+
+    const buttonControls=useMemo(()=>{
+        let buttonControls=[];
+        
+        for(let i=0;i<buttons.length&&i<showCount;++i){
+            const item=buttons[i];
+            const operation=operations.find(element=>element.id===item.operationID);
+            if(operation){
+                buttonControls.push(
+                    <OperationButton key={item.operationID} type='link' doOperation={doOperation} operation={{name:operation.name,...item}}/>
+                );
+            }
+        }
+            
+        return buttonControls;
+    },[buttons,operations,showCount,doOperation]);
     
     return (
         <Space className="row-operation-bar" size={5}>
-        {
-            buttons.filter(item=>operations.find(element=>element.id===item.operationID)).map(item=>
-                <OperationButton type='link' doOperation={doOperation} operation={item}/>
-            )
-        }
+        {buttonControls}
         </Space>
     )
 }

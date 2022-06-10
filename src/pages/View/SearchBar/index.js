@@ -5,10 +5,12 @@ import { useDispatch,useSelector } from "react-redux";
 import { refreshData,setFilter } from '../../../redux/dataSlice';
 
 import './index.css';
+import useI18n from '../../../hooks/useI18n';
 
 const { Search } = Input;
 
 export default function SearchBar(){
+    const {getLocaleLabel}=useI18n();
     const {fields,views}=useSelector(state=>state.definition);
     const {currentView} = useSelector(state=>state.data);
     const dispatch=useDispatch();
@@ -47,8 +49,8 @@ export default function SearchBar(){
     return (
         <div className='search-bar'>
             <Space>
-                <Search placeholder="input search text" onSearch={onSearch}/>
-                <Tooltip title="重置查询条件">
+                <Search placeholder={getLocaleLabel({key:'page.crvlistview.searchInputPlaceholder',default:'input search text'})} onSearch={onSearch}/>
+                <Tooltip title={getLocaleLabel({key:'page.crvlistview.resetFilter',default:'重置查询条件'})}>
                     <Button
                         type="primary"
                         icon={<StopOutlined />}
@@ -56,7 +58,7 @@ export default function SearchBar(){
                         onClick={reset}
                     />
                 </Tooltip>
-                <Tooltip title="刷新">
+                <Tooltip title={getLocaleLabel({key:'page.crvlistview.refresh',default:'刷新'})}>
                     <Button
                         type="primary"
                         icon={<SyncOutlined />}

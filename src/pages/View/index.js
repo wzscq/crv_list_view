@@ -15,7 +15,6 @@ import {createGetModelConfMessage} from '../../utils/normalOperations';
 
 import './index.css';
 
-
 import {initDataView} from '../../redux/dataSlice';
 
 export default function View(){

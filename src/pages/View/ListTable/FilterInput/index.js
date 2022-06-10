@@ -3,6 +3,7 @@ import { Space,Button } from "antd";
 import { useDispatch, useSelector } from 'react-redux';
 import {setFieldFilter,resetFieldFilter} from '../../../../redux/dataSlice';
 import { getControl } from './Controls';
+import I18nLabel from '../../../../components/I18nLabel';
 
 export default function FilterInput({sendMessageToParent,field}){
     const dispatch=useDispatch();
@@ -32,7 +33,7 @@ export default function FilterInput({sendMessageToParent,field}){
                 size="small"
                 style={{ width: 90 }}
                 >
-                查询
+                <I18nLabel label={{key:'page.crvlistview.doSearch',default:'查询'}}/>
             </Button>
             <Button
                 type="primary"
@@ -40,7 +41,7 @@ export default function FilterInput({sendMessageToParent,field}){
                 size="small"
                 style={{ width: 90 }}
                 >
-                重置
+                <I18nLabel label={{key:'page.crvlistview.resetColumnFilter',default:'重置'}}/>
             </Button>
         </Space>
     </div>);

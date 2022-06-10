@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import {setSorter,setFixedColumn} from '../../../redux/dataSlice';
 import FilterInput from './FilterInput';
+import I18nLabel from '../../../components/I18nLabel';
 
 import './FilterDropdown.css';
 
@@ -26,7 +27,7 @@ export default function FilterDropdown({ sendMessageToParent,field,index }){
                         dispatch(setSorter([{field:field.field,order:'asc'}]));
                     }}
                 >
-                    升序
+                    <I18nLabel label={{key:'page.crvlistview.asc',default:'升序'}}/>
                 </Button>
                 <Button
                     type='link'
@@ -37,7 +38,7 @@ export default function FilterDropdown({ sendMessageToParent,field,index }){
                         dispatch(setSorter([{field:field.field,order:'desc'}]));
                     }}
                 >
-                    降序
+                    <I18nLabel label={{key:'page.crvlistview.desc',default:'降序'}}/>
                 </Button>
             </Space>
             <Divider/>
@@ -51,7 +52,7 @@ export default function FilterDropdown({ sendMessageToParent,field,index }){
                         dispatch(setFixedColumn(index+1));
                     }}
                 >
-                    冻结列
+                    <I18nLabel label={{key:'page.crvlistview.fixTheColumn',default:'冻结列'}}/>
                 </Button>
             </Space>
             <Divider/>

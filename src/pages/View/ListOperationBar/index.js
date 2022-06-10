@@ -66,8 +66,8 @@ export default function ListOperationBar({sendMessageToParent}){
                         const operation=operations.find(element=>element.id===item.operationID);
                         if(operation){
                             buttonControls.push(
-                                <OperationButton type='primary' doOperation={doOperation} operation={item}/>
-                            )
+                                <OperationButton key={item.operationID} type='primary' doOperation={doOperation} operation={{name:operation.name,...item}}/>
+                            );
                         }
                     }
                 }

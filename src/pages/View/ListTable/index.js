@@ -11,7 +11,7 @@ import TableFooter from './TableFooter';
 import {createQueryDataMessage} from '../../../utils/normalOperations';
 import RowOperationBar from '../RowOperationBar';
 import ColumnControl from "./ColumnControl";
-
+import I18nLabel from "../../../components/I18nLabel";
 import './index.css';
 
 export default function ListTable({sendMessageToParent}){
@@ -30,7 +30,7 @@ export default function ListTable({sendMessageToParent}){
     const getColumn=useCallback((field,index,isFixed)=>{
         return {
             dataIndex:field.field,
-            title:field.name,
+            title:<I18nLabel label={field.name}/>,
             filterDropdown:<FilterDropdown sendMessageToParent={sendMessageToParent} field={field} index={index}/>,
             filterIcon: <FilterIcon field={field}/>,
             width:field.width,
@@ -45,7 +45,7 @@ export default function ListTable({sendMessageToParent}){
     const getOperationColumn=useCallback((rowToolbar)=>{
         const {showCount,buttons,width}=rowToolbar;
         return { 
-            title: '操作', 
+            title: <I18nLabel label={{key:'page.crvlistview.operationColumnTitle',default:'操作'}}/>, 
             dataIndex: '__action',
             width: width,
             fixed:'left',

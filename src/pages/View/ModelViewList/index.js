@@ -3,10 +3,11 @@ import { Select } from 'antd';
 import { useSelector,useDispatch } from 'react-redux';
 
 import {setCurrentView} from '../../../redux/dataSlice';
-
+import useI18n from '../../../hooks/useI18n';
 const { Option } = Select;
 
 export default function ModelViewList(){
+    const {getLocaleLabel}=useI18n();
     const dispatch=useDispatch();
     const {views} = useSelector(state=>state.definition);
     const {currentView} = useSelector(state=>state.data);
@@ -17,9 +18,9 @@ export default function ModelViewList(){
 
     const options=useMemo(()=>{
         return views.map(item=>{
-            return (<Option value={item.viewID}>{item.name}</Option>)
+            return (<Option value={item.viewID}>{getLocaleLabel(item.name)}</Option>)
         });
-    },[views]);
+    },[views,getLocaleLabel]);
 
     const filterOption=(input, option) =>{
         return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0

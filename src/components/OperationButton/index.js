@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Popconfirm,Button } from "antd";
 
+import I18nLabel from "../I18nLabel";
+
 export default function OperationButton({type,operation,doOperation}){
     const [promptVisible,setPromptVisible]=useState(false);
 
@@ -25,7 +27,7 @@ export default function OperationButton({type,operation,doOperation}){
             <Button 
                 onClick={()=>operation.prompt?setPromptVisible(true):doOperation(operation)} 
                 type={type}>
-                {operation.name}
+                <I18nLabel label={operation.name}/>
             </Button>
         </Popconfirm>
     )

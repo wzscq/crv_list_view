@@ -16,7 +16,7 @@ const opGetModelConf={
         method:"post"
     },
     input:{},
-    description:"获取模型配置信息"
+    description:{key:'page.crvlistview.getModelConf',default:'获取模型配置信息'}
 }
 
 export function createGetModelConfMessage(frameParams,modelID){
@@ -47,7 +47,7 @@ const opQueryData={
         method:"post"
     },
     input:{},
-    description:"查询模型数据"
+    description:{key:'page.crvlistview.queryModelData',default:'查询模型数据'}
 }
 
 /**
