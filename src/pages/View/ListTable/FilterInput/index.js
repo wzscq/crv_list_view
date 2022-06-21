@@ -9,8 +9,8 @@ export default function FilterInput({sendMessageToParent,field}){
     const dispatch=useDispatch();
     const filter = useSelector(state=>state.data.views[state.data.currentView].data.filter);
     const [filterValue,setFilterValue]=useState(filter[field.field]);
-
-    const onFilterChange=(value)=>{
+    
+    const onFilterChange=(value,label)=>{
         setFilterValue(value);
         //dispatch(setFieldFilter({[field.field]:e.target.value}));
     }

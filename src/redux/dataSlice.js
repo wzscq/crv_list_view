@@ -89,7 +89,10 @@ const initViewItem=(viewConf)=>{
             selectedRowKeys:[],  //List视图页面中选中行
             fixedColumn:0,
             list:[],
-        }
+            filterValueLabel:{  //这个值仅用于页面显示顾虑条件的值
+
+            }
+        },
     }
 }
 

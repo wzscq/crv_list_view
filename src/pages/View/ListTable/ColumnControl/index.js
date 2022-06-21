@@ -2,10 +2,12 @@ import {useState,useEffect,useRef} from 'react';
 import { Tooltip } from 'antd';
 
 import { FIELD_TYPE } from "../../../../utils/constant";
+import useI18n from '../../../../hooks/useI18n';
 
 import './index.css';
 
 export default function ColumnControl({text,field, record, index}){
+    const {getLocaleLabel}=useI18n();
     const [showTip,setShowTip]=useState(false);
     const ref=useRef();
     let value=text;
@@ -18,9 +20,9 @@ export default function ColumnControl({text,field, record, index}){
     }
 
     if(field.options){
-        const option=field.options.find(item=>item.value==value);
+        const option=field.options.find(item=>item.value===value);
         if(option){
-            value=option.label;
+            value=getLocaleLabel(option.label);
         }
     }
 
