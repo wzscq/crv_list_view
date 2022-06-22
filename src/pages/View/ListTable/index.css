@@ -4,3 +4,7 @@
     position: relative;
     overflow: hidden;
 }
+
+.ant-table-cell-fix-left, .ant-table-cell-fix-right {
+    background-color: inherit;
+}
