@@ -28,6 +28,19 @@ export default function ListTable({sendMessageToParent}){
 
     //根据视图列配置生成列
     const getColumn=useCallback((field,index,isFixed)=>{
+        const getCellStyleFunc=(cellStyle)=>{
+            const funStr='"use strict";'+
+                        'return (function(record, rowIndex){ '+
+                            'try {'+
+                                cellStyle+
+                            '} catch(e) {'+
+                            '   console.error(e);'+
+                            '   return undefined;'+
+                            '}'+
+                        '})';
+            return Function(funStr)();
+        };
+
         return {
             dataIndex:field.field,
             title:<I18nLabel label={field.name}/>,
@@ -36,6 +49,12 @@ export default function ListTable({sendMessageToParent}){
             width:field.width,
             fixed:(isFixed?'left':''),
             ellipsis: true,
+            onCell:(record,rowIndex)=>{
+                if(field.cellStyle){
+                    const cellStyle=getCellStyleFunc(field.cellStyle)(record,rowIndex);
+                    return {style:cellStyle};
+                }        
+            },
             render:(text, record, index)=>{
                 return <ColumnControl text={text} field={field} record={record} index={index} />;
             }
@@ -125,6 +144,35 @@ export default function ListTable({sendMessageToParent}){
     };
     //处理行选中结束
 
+    //可以通过公式控制row的背景色
+    const onRow=useCallback((record, rowIndex)=>{
+        console.log('onRow',viewConf.rowStyle);
+        if(viewConf.rowStyle){
+            const getRowStyleFunc=()=>{
+                const funStr='"use strict";'+
+                            'return (function(record, rowIndex){ '+
+                                'try {'+
+                                    viewConf.rowStyle+
+                                '} catch(e) {'+
+                                '   console.error(e);'+
+                                '   return undefined;'+
+                                '}'+
+                            '})';
+                return Function(funStr)();
+            };
+
+            const rst=getRowStyleFunc()(record, rowIndex);
+            console.log('rowStyle:',rst);
+            const rowStyle={
+                style:{backgroundColor:'white',...rst}
+            };
+            return rowStyle
+        }
+        return ({
+            style:{backgroundColor:'white'}
+        });
+    },[viewConf]);
+
     return (
         <div className="list-table">
             <Table 
@@ -137,6 +185,7 @@ export default function ListTable({sendMessageToParent}){
                 footer={()=>(<TableFooter/>)}
                 pagination={false}
                 scroll={{ y: height-80 }}
+                onRow={onRow}
             />
             <div ref={ref} style={{height:"100%",width:"100%"}}>{}</div>
         </div>
